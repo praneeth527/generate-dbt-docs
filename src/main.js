@@ -1,27 +1,70 @@
 const core = require('@actions/core')
-const { wait } = require('./wait')
+const fs = require('fs')
+const mustache = require('mustache')
+const { spawnSync } = require('child_process')
 
-/**
- * The main function for the action.
- * @returns {Promise<void>} Resolves when the action is complete.
- */
+const {
+  runCommand,
+  getDirectories,
+  getDbtArgs,
+  getCopyCommand
+} = require('./utils')
+const { tmpDocDir, commands } = require('./constants')
+
 async function run() {
   try {
-    const ms = core.getInput('milliseconds', { required: true })
+    const projectsDir = core.getInput('projects_dir')
+    const envFilePaths = core.getInput('env_file_path')
+    const docsOutputDir = core.getInput('docs_dir')
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const dbtProfile = core.getInput('dbt_profile')
+    const dbtVars = core.getInput('dbt_vars')
+    const dbtTarget = core.getInput('dbt_target')
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const projects = getDirectories(projectsDir)
+    const dbtArgs = getDbtArgs(dbtProfile, dbtVars, dbtTarget)
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const cwd = spawnSync('pwd', { shell: true }).stdout.toString()
+
+    if (envFilePaths) {
+      await runCommand(`source ${cwd}/${envFilePaths}`)
+    }
+
+    const projectList = []
+
+    for (const project of projects) {
+      const projectFullPath = `${cwd}/${projectsDir}/${project}`
+      const tmpPath = `${cwd}/${tmpDocDir}/${project}`
+      process.chdir(projectFullPath)
+      for (const command of commands) {
+        await runCommand(`${command} ${dbtArgs}`)
+      }
+      fs.mkdirSync(tmpPath, { recursive: true })
+
+      await runCommand(getCopyCommand(projectFullPath, tmpPath))
+
+      projectList.push(`<li><a href="${project}">${project}</a></li>`)
+    }
+
+    await runCommand(`mv ${cwd}/${tmpDocDir} ${cwd}/${docsOutputDir}`)
+
+    const mainIndexHtml = mustache.render(
+      fs.readFileSync('index.html').toString(),
+      {
+        projectListItems: projectList
+      }
+    )
+
+    fs.writeFileSync(`${cwd}/${docsOutputDir}/index.html`, mainIndexHtml)
+
+    core.info(
+      `dbt docs generated successfully and written to ${cwd}/${docsOutputDir}`
+    )
   } catch (error) {
     // Fail the workflow run if an error occurs
-    core.setFailed(error.message)
+    if (error instanceof Error) {
+      core.setFailed(error.message)
+    }
   }
 }
 

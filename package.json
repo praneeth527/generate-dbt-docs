@@ -1,17 +1,18 @@
 {
-  "name": "javascript-action",
-  "description": "GitHub Actions JavaScript Template",
-  "version": "0.0.0",
-  "author": "",
+  "name": "dbt-docs-generator",
+  "description": "GitHub Action for generating dbt docs for multiple projects",
+  "version": "1.0.0",
+  "author": "Praneeth Kumar Reddy Ballarapu (praneeth527)",
   "private": true,
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/praneeth527/dbt-docs-generator",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/praneeth527/dbt-docs-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/praneeth527/dbt-docs-generator/issues"
   },
+  "main": "./dist/index.js",
   "keywords": [
     "GitHub",
     "Actions",
@@ -30,7 +31,7 @@
     "format:write": "npx prettier --write .",
     "format:check": "npx prettier --check .",
     "lint": "npx eslint . -c ./.github/linters/.eslintrc.yml",
-    "package": "npx ncc build src/index.js -o dist --source-map --license licenses.txt",
+    "package": "npx ncc build src/index.js -o dist --source-map --license licenses.txt && cp ./src/index.html dist/index.html",
     "package:watch": "npm run package -- --watch",
     "test": "npx jest",
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
@@ -64,7 +65,8 @@
     ]
   },
   "dependencies": {
-    "@actions/core": "^1.10.1"
+    "@actions/core": "^1.10.1",
+    "mustache": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",
