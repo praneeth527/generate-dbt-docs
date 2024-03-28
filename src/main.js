@@ -7,7 +7,8 @@ const {
   runCommand,
   getDirectories,
   getDbtArgs,
-  getCopyCommand
+  getCopyCommand,
+  runCommandSync
 } = require('./utils')
 const { tmpDocDir, commands, indexHtmlFilePath } = require('./constants')
 
@@ -24,7 +25,7 @@ async function run() {
     const projects = getDirectories(projectsDir)
     const dbtArgs = getDbtArgs(dbtProfile, dbtVars, dbtTarget)
 
-    const cwd = spawnSync('pwd', { shell: true }).stdout.toString().trim()
+    const cwd = runCommandSync('pwd').stdout
     core.info(`cwd: ${cwd}`)
 
     if (envFilePaths) {
@@ -49,24 +50,14 @@ async function run() {
     }
     process.chdir(cwd)
 
-    await runCommand(
-      `ls -ltra /home/runner/work/_actions/praneeth527/dbt-docs-generator/*/dist`
-    )
-
-    await runCommand(`cat ${indexHtmlFilePath}`)
-
     await runCommand(`mv ${cwd}/${tmpDocDir} ${docsOutputDir}`)
 
     const mainIndexHtml = mustache.render(
-      fs.readFileSync(indexHtmlFilePath).toString(),
+      runCommandSync(`cat ${indexHtmlFilePath}`).stdout,
       {
         projectListItems: projectList
       }
     )
-    core.info(`mainIndexHtml: ${mainIndexHtml}`)
-
-    core.info(`creating the docs output dir if not exists: ${docsOutputDir}`)
-    fs.mkdirSync(docsOutputDir, { recursive: true })
 
     fs.writeFileSync(`${docsOutputDir}/index.html`, mainIndexHtml)
 

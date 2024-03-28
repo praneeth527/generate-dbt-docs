@@ -1,4 +1,4 @@
-const { spawn } = require('child_process')
+const { spawn, spawnSync } = require('child_process')
 const core = require('@actions/core')
 const fs = require('fs')
 
@@ -20,6 +20,14 @@ async function runCommand(command) {
       resolve()
     })
   })
+}
+
+function runCommandSync(command) {
+  const { stdout, stderr } = spawnSync(command, { shell: true })
+  return {
+    stdout: stdout.toString().trim(),
+    stderr: stderr.toString().trim()
+  }
 }
 
 function getDbtArgs(dbtProfile, dbtVars, dbtTarget) {
@@ -49,6 +57,7 @@ function getCopyCommand(src, dest) {
 
 module.exports = {
   runCommand,
+  runCommandSync,
   getCopyCommand,
   getDirectories,
   getDbtArgs

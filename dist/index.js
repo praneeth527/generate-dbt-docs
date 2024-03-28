@@ -25513,7 +25513,8 @@ const {
   runCommand,
   getDirectories,
   getDbtArgs,
-  getCopyCommand
+  getCopyCommand,
+  runCommandSync
 } = __nccwpck_require__(1608)
 const { tmpDocDir, commands, indexHtmlFilePath } = __nccwpck_require__(4438)
 
@@ -25530,7 +25531,7 @@ async function run() {
     const projects = getDirectories(projectsDir)
     const dbtArgs = getDbtArgs(dbtProfile, dbtVars, dbtTarget)
 
-    const cwd = spawnSync('pwd', { shell: true }).stdout.toString().trim()
+    const cwd = runCommandSync('pwd').stdout
     core.info(`cwd: ${cwd}`)
 
     if (envFilePaths) {
@@ -25555,24 +25556,14 @@ async function run() {
     }
     process.chdir(cwd)
 
-    await runCommand(
-      `ls -ltra /home/runner/work/_actions/praneeth527/dbt-docs-generator/*/dist`
-    )
-
-    await runCommand(`cat ${indexHtmlFilePath}`)
-
     await runCommand(`mv ${cwd}/${tmpDocDir} ${docsOutputDir}`)
 
     const mainIndexHtml = mustache.render(
-      fs.readFileSync(indexHtmlFilePath).toString(),
+      runCommandSync(`cat ${indexHtmlFilePath}`).stdout,
       {
         projectListItems: projectList
       }
     )
-    core.info(`mainIndexHtml: ${mainIndexHtml}`)
-
-    core.info(`creating the docs output dir if not exists: ${docsOutputDir}`)
-    fs.mkdirSync(docsOutputDir, { recursive: true })
 
     fs.writeFileSync(`${docsOutputDir}/index.html`, mainIndexHtml)
 
@@ -25595,7 +25586,7 @@ module.exports = {
 /***/ 1608:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const { spawn } = __nccwpck_require__(2081)
+const { spawn, spawnSync } = __nccwpck_require__(2081)
 const core = __nccwpck_require__(2186)
 const fs = __nccwpck_require__(7147)
 
@@ -25617,6 +25608,14 @@ async function runCommand(command) {
       resolve()
     })
   })
+}
+
+function runCommandSync(command) {
+  const { stdout, stderr } = spawnSync(command, { shell: true })
+  return {
+    stdout: stdout.toString().trim(),
+    stderr: stderr.toString().trim()
+  }
 }
 
 function getDbtArgs(dbtProfile, dbtVars, dbtTarget) {
@@ -25646,6 +25645,7 @@ function getCopyCommand(src, dest) {
 
 module.exports = {
   runCommand,
+  runCommandSync,
   getCopyCommand,
   getDirectories,
   getDbtArgs
