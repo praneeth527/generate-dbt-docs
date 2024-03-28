@@ -25549,6 +25549,7 @@ async function run() {
 
       projectList.push(`<li><a href="${project}">${project}</a></li>`)
     }
+    process.chdir(cwd)
 
     await runCommand(`mv ${cwd}/${tmpDocDir} ${cwd}/${docsOutputDir}`)
 
@@ -25558,12 +25559,14 @@ async function run() {
         projectListItems: projectList
       }
     )
+    core.info(`mainIndexHtml: ${mainIndexHtml}`)
 
-    fs.writeFileSync(`${cwd}/${docsOutputDir}/index.html`, mainIndexHtml)
+    core.info(`creating the docs output dir if not exists: ${docsOutputDir}`)
+    fs.mkdirSync(docsOutputDir, { recursive: true })
 
-    core.info(
-      `dbt docs generated successfully and written to ${cwd}/${docsOutputDir}`
-    )
+    fs.writeFileSync(`${docsOutputDir}/index.html`, mainIndexHtml)
+
+    core.info(`dbt docs generated successfully and written to ${docsOutputDir}`)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) {
@@ -25587,6 +25590,7 @@ const core = __nccwpck_require__(2186)
 const fs = __nccwpck_require__(7147)
 
 async function runCommand(command) {
+  core.info(`running command: ${command}`)
   return new Promise(resolve => {
     const childProcess = spawn(command, { shell: true })
 

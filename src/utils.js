@@ -3,6 +3,7 @@ const core = require('@actions/core')
 const fs = require('fs')
 
 async function runCommand(command) {
+  core.info(`running command: ${command}`)
   return new Promise(resolve => {
     const childProcess = spawn(command, { shell: true })
 
