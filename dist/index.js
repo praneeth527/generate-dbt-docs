@@ -25526,7 +25526,8 @@ async function run() {
     const projects = getDirectories(projectsDir)
     const dbtArgs = getDbtArgs(dbtProfile, dbtVars, dbtTarget)
 
-    const cwd = spawnSync('pwd', { shell: true }).toString()
+    const cwd = spawnSync('pwd', { shell: true }).stdout.toString()
+    core.info(`cwd: ${cwd}`)
 
     if (envFilePaths) {
       await runCommand(`source ${cwd}/${envFilePaths}`)
@@ -25537,6 +25538,7 @@ async function run() {
     for (const project of projects) {
       const projectFullPath = `${cwd}/${projectsDir}/${project}`
       const tmpPath = `${cwd}/${tmpDocDir}/${project}`
+      core.info(`changing dir to ${projectFullPath}`)
       process.chdir(projectFullPath)
       for (const command of commands) {
         await runCommand(`${command} ${dbtArgs}`)
