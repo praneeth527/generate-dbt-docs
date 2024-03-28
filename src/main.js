@@ -53,6 +53,8 @@ async function run() {
       `ls -ltra /home/runner/work/_actions/praneeth527/dbt-docs-generator/*/dist`
     )
 
+    await runCommand(`cat ${indexHtmlFilePath}`)
+
     await runCommand(`mv ${cwd}/${tmpDocDir} ${docsOutputDir}`)
 
     const mainIndexHtml = mustache.render(
