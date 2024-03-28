@@ -1,18 +1,34 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'DBT Docs Generator'
+description: 'Generates DBT docs for the multiple projects'
+author: 'Praneeth Kumar Reddy Ballarapu (praneeth527)'
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: 'heart'
+  color: 'red'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  projects_dir:
+    description: 'dbt projects base directory path'
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
+  env_file_path:
+    description: 'env variables file path if any'
+    required: false
+  docs_dir:
+    description:
+      'output directory path where dbt generated docs will be written'
+    required: true
+    default: 'docs'
+  dbt_profile:
+    description: 'dbt profile to be passed'
+    required: false
+  dbt_vars:
+    description: 'dbt vars to be passed'
+    required: false
+  dbt_target:
+    description: 'dbt target to be passed'
+    required: false
 
 runs:
   using: node20
