@@ -9,7 +9,7 @@ const {
   getDbtArgs,
   getCopyCommand
 } = require('./utils')
-const { tmpDocDir, commands } = require('./constants')
+const { tmpDocDir, commands, indexHtmlFilePath } = require('./constants')
 
 async function run() {
   try {
@@ -49,14 +49,10 @@ async function run() {
     }
     process.chdir(cwd)
 
-    await runCommand(
-      `ls /home/runner/work/_actions/praneeth527/dbt-docs-generator/*/`
-    )
-
     await runCommand(`mv ${cwd}/${tmpDocDir} ${docsOutputDir}`)
 
     const mainIndexHtml = mustache.render(
-      fs.readFileSync('index.html').toString(),
+      fs.readFileSync(indexHtmlFilePath).toString(),
       {
         projectListItems: projectList
       }

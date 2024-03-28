@@ -25488,10 +25488,14 @@ const tmpDocDir = 'tmp_docs'
 
 const fileFormats = ['.json', '*.html', '.gpickle']
 
+const indexHtmlFilePath =
+  '/home/runner/work/_actions/praneeth527/dbt-docs-generator/*/dist/index.html'
+
 module.exports = {
   commands,
   tmpDocDir,
-  fileFormats
+  fileFormats,
+  indexHtmlFilePath
 }
 
 
@@ -25511,7 +25515,7 @@ const {
   getDbtArgs,
   getCopyCommand
 } = __nccwpck_require__(1608)
-const { tmpDocDir, commands } = __nccwpck_require__(4438)
+const { tmpDocDir, commands, indexHtmlFilePath } = __nccwpck_require__(4438)
 
 async function run() {
   try {
@@ -25551,14 +25555,10 @@ async function run() {
     }
     process.chdir(cwd)
 
-    await runCommand(
-      `ls /home/runner/work/_actions/praneeth527/dbt-docs-generator/*/`
-    )
-
     await runCommand(`mv ${cwd}/${tmpDocDir} ${docsOutputDir}`)
 
     const mainIndexHtml = mustache.render(
-      fs.readFileSync('index.html').toString(),
+      fs.readFileSync(indexHtmlFilePath).toString(),
       {
         projectListItems: projectList
       }
