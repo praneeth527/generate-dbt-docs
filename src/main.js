@@ -24,7 +24,7 @@ async function run() {
     const projects = getDirectories(projectsDir)
     const dbtArgs = getDbtArgs(dbtProfile, dbtVars, dbtTarget)
 
-    const cwd = spawnSync('pwd', { shell: true }).stdout.toString()
+    const cwd = spawnSync('pwd', { shell: true }).stdout.toString().trim()
     core.info(`cwd: ${cwd}`)
 
     if (envFilePaths) {
