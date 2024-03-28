@@ -55,7 +55,7 @@ async function run() {
     const mainIndexHtml = mustache.render(
       runCommandSync(`cat ${indexHtmlFilePath}`).stdout,
       {
-        projectListItems: projectList
+        projectList
       }
     )
 
