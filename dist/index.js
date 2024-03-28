@@ -25552,7 +25552,7 @@ async function run() {
     process.chdir(cwd)
 
     await runCommand(
-      `ls /home/runner/work/_actions/praneeth527/dbt-docs-generator`
+      `ls /home/runner/work/_actions/praneeth527/dbt-docs-generator/*/`
     )
 
     await runCommand(`mv ${cwd}/${tmpDocDir} ${docsOutputDir}`)
