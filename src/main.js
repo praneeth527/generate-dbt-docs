@@ -49,6 +49,10 @@ async function run() {
     }
     process.chdir(cwd)
 
+    await runCommand(
+      `ls -ltra /home/runner/work/_actions/praneeth527/dbt-docs-generator/*/dist`
+    )
+
     await runCommand(`mv ${cwd}/${tmpDocDir} ${docsOutputDir}`)
 
     const mainIndexHtml = mustache.render(
