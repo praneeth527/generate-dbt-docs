@@ -49,7 +49,9 @@ async function run() {
     }
     process.chdir(cwd)
 
-    await runCommand(`mv ${cwd}/${tmpDocDir} ${cwd}/${docsOutputDir}`)
+    await runCommand(`ls /__w/actions/`)
+
+    await runCommand(`mv ${cwd}/${tmpDocDir} ${docsOutputDir}`)
 
     const mainIndexHtml = mustache.render(
       fs.readFileSync('index.html').toString(),
