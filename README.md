@@ -1,4 +1,4 @@
-# <img src="https://global.discourse-cdn.com/business7/uploads/getdbt/original/1X/a7a7ca1fe379aaf90952b0e13118a817babcd14f.png" alt="ClickHouse Server Action" width="50" height="50"> generate-dbt-docs
+# <img src="https://global.discourse-cdn.com/business7/uploads/getdbt/original/1X/a7a7ca1fe379aaf90952b0e13118a817babcd14f.png" alt="generate-dbt-docs" width="50" height="50"> generate-dbt-docs
 
 This action is used to generate
 [dbt docs](https://docs.getdbt.com/docs/collaborate/documentation) for single or
