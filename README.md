@@ -41,13 +41,13 @@ jobs:
 ## Inputs 📥
 
 | Input           | Required? | Default | Description                                                    |
-| --------------- | --------- | ------- | -------------------------------------------------------------- | --- |
-| `projects_dir`  | `true`    | -       | path of the dbt projects folder in the repo                    |     |
-| `docs_dir`      | `true`    | `docs`  | output directory path where dbt generated docs will be written |     |
-| `env_file_path` | `false`   | -       | env variables file to source before running dbt commands       |     |
-| `dbt_profile`   | `false`   | -       | dbt profile to be passed to the dbt command                    |     |
-| `dbt_vars`      | `false`   | -       | dbt vars to be passed to the dbt command                       |     |
-| `dbt_target`    | `false`   | -       | dbt target to be passed to the dbt command                     |     |
+| --------------- | --------- | ------- | -------------------------------------------------------------- |
+| `projects_dir`  | `true`    | -       | path of the dbt projects folder in the repo                    |
+| `docs_dir`      | `true`    | `docs`  | output directory path where dbt generated docs will be written |
+| `env_file_path` | `false`   | -       | env variables file to source before running dbt commands       |
+| `dbt_profile`   | `false`   | -       | dbt profile to be passed to the dbt command                    |
+| `dbt_vars`      | `false`   | -       | dbt vars to be passed to the dbt command                       |
+| `dbt_target`    | `false`   | -       | dbt target to be passed to the dbt command                     |
 
 ### env_file_path contents example
 
