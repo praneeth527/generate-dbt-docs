@@ -15,6 +15,13 @@ const { tmpDocDir, commands, indexHtmlFilePath } = require('./constants')
 async function run() {
   try {
     const projectsDir = core.getInput('projects_dir')
+
+    if (!projectsDir) {
+      const errorMessage =
+        'projects_dir input is mandatory, please check action.yml for all the inputs'
+      core.error(errorMessage)
+      core.setFailed(errorMessage)
+    }
     const envFilePaths = core.getInput('env_file_path')
     const docsOutputDir = core.getInput('docs_dir')
 

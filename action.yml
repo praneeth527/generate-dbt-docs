@@ -1,33 +1,31 @@
-name: 'DBT Docs Generator'
-description: 'Generates DBT docs for the multiple projects'
+name: 'Generate DBT Docs'
+description: 'Generates DBT docs for single or multiple projects'
 author: 'Praneeth Kumar Reddy Ballarapu (praneeth527)'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: 'heart'
-  color: 'red'
+  icon: 'book-open'
+  color: 'orange'
 
-# Define your inputs here.
 inputs:
   projects_dir:
-    description: 'dbt projects base directory path'
+    description: 'path of the dbt projects folder in the repo'
     required: true
-  env_file_path:
-    description: 'env variables file path if any'
-    required: false
   docs_dir:
     description:
       'output directory path where dbt generated docs will be written'
     required: true
     default: 'docs'
+  env_file_path:
+    description: 'env variables file to source before running dbt commands'
+    required: false
   dbt_profile:
-    description: 'dbt profile to be passed'
+    description: 'dbt profile to be passed to the dbt command'
     required: false
   dbt_vars:
-    description: 'dbt vars to be passed'
+    description: 'dbt vars to be passed to the dbt command'
     required: false
   dbt_target:
-    description: 'dbt target to be passed'
+    description: 'dbt target to be passed to the dbt command'
     required: false
 
 runs:

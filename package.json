@@ -1,22 +1,24 @@
 {
-  "name": "dbt-docs-generator",
+  "name": "generate-dbt-docs",
   "description": "GitHub Action for generating dbt docs for multiple projects",
   "version": "1.0.0",
   "author": "Praneeth Kumar Reddy Ballarapu (praneeth527)",
   "private": true,
-  "homepage": "https://github.com/praneeth527/dbt-docs-generator",
+  "homepage": "https://github.com/praneeth527/generate-dbt-docs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/praneeth527/dbt-docs-generator.git"
+    "url": "git+https://github.com/praneeth527/generate-dbt-docs.git"
   },
   "bugs": {
-    "url": "https://github.com/praneeth527/dbt-docs-generator/issues"
+    "url": "https://github.com/praneeth527/generate-dbt-docs/issues"
   },
   "main": "./dist/index.js",
   "keywords": [
     "GitHub",
     "Actions",
-    "JavaScript"
+    "JavaScript",
+    "dbt Docs",
+    "Multuple dbt docs"
   ],
   "exports": {
     ".": "./dist/index.js"
