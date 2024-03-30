@@ -62,6 +62,11 @@ export ENV_VAR3=VAR3_VALUE
 
 There are no outputs returned by the action as of now.
 
+## Demo
+
+Check this repo for the demo of this action usage
+https://github.com/praneeth527/dbt-docs-demo
+
 ---
 
 The dbt logo is a trademark of https://getdbt.com/ and is used here under
