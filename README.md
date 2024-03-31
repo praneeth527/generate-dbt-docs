@@ -52,10 +52,10 @@ jobs:
 ### env_file_path contents example
 
 ```shell
-export DBT_PROFILE_DIR=profiles
-export ENV_VAR1=VAR1_VALUE
-export ENV_VAR2=VAR2_VALUE
-export ENV_VAR3=VAR3_VALUE
+DBT_PROFILE_DIR=profiles
+ENV_VAR1=VAR1_VALUE
+ENV_VAR2=VAR2_VALUE
+ENV_VAR3=VAR3_VALUE
 ```
 
 ## Outputs 📤
