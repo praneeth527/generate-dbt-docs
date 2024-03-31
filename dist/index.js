@@ -25549,7 +25549,9 @@ async function run() {
     core.info(`cwd: ${cwd}`)
 
     if (envFilePaths) {
-      await runCommand(`source ${cwd}/${envFilePaths}`)
+      await runCommand(
+        `sed "/#/d; s/^export //" ${cwd}/${envFilePaths} >> "$GITHUB_ENV"`
+      )
     }
 
     const projectList = []
