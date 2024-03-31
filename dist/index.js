@@ -25491,11 +25491,14 @@ const fileFormats = ['.json', '*.html', '.gpickle']
 const indexHtmlFilePath =
   '/home/runner/work/_actions/praneeth527/generate-dbt-docs/*/dist/index.html'
 
+const dbtVarsLocalFile = 'vars.txt'
+
 module.exports = {
   commands,
   tmpDocDir,
   fileFormats,
-  indexHtmlFilePath
+  indexHtmlFilePath,
+  dbtVarsLocalFile
 }
 
 
@@ -25516,7 +25519,12 @@ const {
   getCopyCommand,
   runCommandSync
 } = __nccwpck_require__(1608)
-const { tmpDocDir, commands, indexHtmlFilePath } = __nccwpck_require__(4438)
+const {
+  tmpDocDir,
+  commands,
+  indexHtmlFilePath,
+  dbtVarsLocalFile
+} = __nccwpck_require__(4438)
 
 async function run() {
   try {
@@ -25532,11 +25540,10 @@ async function run() {
     const docsOutputDir = core.getInput('docs_dir')
 
     const dbtProfile = core.getInput('dbt_profile')
-    const dbtVars = core.getInput('dbt_vars')
+    const globalDbtVars = core.getInput('dbt_vars')
     const dbtTarget = core.getInput('dbt_target')
 
     const projects = getDirectories(projectsDir)
-    const dbtArgs = getDbtArgs(dbtProfile, dbtVars, dbtTarget)
 
     const cwd = runCommandSync('pwd').stdout
     core.info(`cwd: ${cwd}`)
@@ -25552,6 +25559,13 @@ async function run() {
       const tmpPath = `${cwd}/${tmpDocDir}/${project}`
       core.info(`changing dir to ${projectFullPath}`)
       process.chdir(projectFullPath)
+
+      let runDbtVars = globalDbtVars
+      if (fs.existsSync(dbtVarsLocalFile)) {
+        runDbtVars = fs.readFileSync(dbtVarsLocalFile).toString()
+      }
+
+      const dbtArgs = getDbtArgs(dbtProfile, runDbtVars, dbtTarget)
       for (const command of commands) {
         await runCommand(`${command} ${dbtArgs}`)
       }

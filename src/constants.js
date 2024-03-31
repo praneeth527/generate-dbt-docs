@@ -7,9 +7,12 @@ const fileFormats = ['.json', '*.html', '.gpickle']
 const indexHtmlFilePath =
   '/home/runner/work/_actions/praneeth527/generate-dbt-docs/*/dist/index.html'
 
+const dbtVarsLocalFile = 'vars.txt'
+
 module.exports = {
   commands,
   tmpDocDir,
   fileFormats,
-  indexHtmlFilePath
+  indexHtmlFilePath,
+  dbtVarsLocalFile
 }

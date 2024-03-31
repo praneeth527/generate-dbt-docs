@@ -10,7 +10,12 @@ const {
   getCopyCommand,
   runCommandSync
 } = require('./utils')
-const { tmpDocDir, commands, indexHtmlFilePath } = require('./constants')
+const {
+  tmpDocDir,
+  commands,
+  indexHtmlFilePath,
+  dbtVarsLocalFile
+} = require('./constants')
 
 async function run() {
   try {
@@ -26,11 +31,10 @@ async function run() {
     const docsOutputDir = core.getInput('docs_dir')
 
     const dbtProfile = core.getInput('dbt_profile')
-    const dbtVars = core.getInput('dbt_vars')
+    const globalDbtVars = core.getInput('dbt_vars')
     const dbtTarget = core.getInput('dbt_target')
 
     const projects = getDirectories(projectsDir)
-    const dbtArgs = getDbtArgs(dbtProfile, dbtVars, dbtTarget)
 
     const cwd = runCommandSync('pwd').stdout
     core.info(`cwd: ${cwd}`)
@@ -46,6 +50,13 @@ async function run() {
       const tmpPath = `${cwd}/${tmpDocDir}/${project}`
       core.info(`changing dir to ${projectFullPath}`)
       process.chdir(projectFullPath)
+
+      let runDbtVars = globalDbtVars
+      if (fs.existsSync(dbtVarsLocalFile)) {
+        runDbtVars = fs.readFileSync(dbtVarsLocalFile).toString()
+      }
+
+      const dbtArgs = getDbtArgs(dbtProfile, runDbtVars, dbtTarget)
       for (const command of commands) {
         await runCommand(`${command} ${dbtArgs}`)
       }
