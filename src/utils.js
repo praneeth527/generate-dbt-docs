@@ -36,12 +36,12 @@ function getDbtArgs(dbtProfile, dbtVars, dbtTarget) {
     dbtArgs += `--vars '${dbtVars}'`
   }
   if (dbtProfile) {
-    dbtArgs += `--profile '${dbtProfile}'`
+    dbtArgs += ` --profile '${dbtProfile}'`
   }
   if (dbtTarget) {
-    dbtArgs += `--target '${dbtTarget}'`
+    dbtArgs += ` --target '${dbtTarget}'`
   }
-  return dbtArgs
+  return dbtArgs.trim()
 }
 
 function getDirectories(projectsDir) {
